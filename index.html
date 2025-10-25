@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lingo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <input type="text" maxlength="1" class="letter" id="box1">
+    <input type="text" maxlength="1" class="letter" id="box2">
+    <input type="text" maxlength="1" class="letter" id="box3">
+    <input type="text" maxlength="1" class="letter" id="box4">
+    <input type="text" maxlength="1" class="letter" id="box5">
+    <button id="submitBtn">Submit</button>
+    <h1 id="inputText"></h1>
+
+
+    <script>
+        let randomWord = "";
+        // Random woord kiesen uit txt bestand
+        $(document).ready(function () {
+            $.get('words-nl.txt', function (txt) {
+                var lines = txt.split("\n");
+                var randLineNum = Math.floor(Math.random() * lines.length);
+                randomWord = lines[randLineNum].trim();
+                console.log(randomWord);
+            })
+        })
+
+
+        // Input boxen automatisch naar volgende gaan
+        $(".letter").on("input", function () {
+            let current = $(this);
+            let next = current.next(".letter");
+
+            // Ga naar volgende input box als de huidige is ingevuld
+            if (current.val().length === 1 && next.length) {
+                next.focus();
+            }
+        })
+
+        // Met backspace terug naar vorige vakje
+        $(".letter").on("keydown", function (e) {
+            if (e.key === "Backspace" && $(this).val() === "") {
+                $(this).prev(".letter").focus();
+            }
+        })
+
+        // Ingevoerde letters samenvoegen en weergeven
+        $(".letter").on("input", function () {
+            let inputValue = "";
+            $(".letter").each(function () {
+                inputValue += $(this).val();
+            });
+            $("#inputText").text(inputValue);
+        })
+
+        // Woord controleren
+        $("#submitBtn").on("click", function () {
+            let guessedWord = "";
+            $(".letter").each(function () {
+                guessedWord += $(this).val();
+            });
+            console.log(guessedWord);
+        })
+
+
+    </script>
+</body>
+
+</html>
