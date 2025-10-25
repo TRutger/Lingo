@@ -65,6 +65,14 @@
                 guessedWord += $(this).val();
             });
             console.log(guessedWord);
+            if (guessedWord.length !== 5) {
+                alert("Vul alle vakjes in!");
+                return;
+            } else if (guessedWord === randomWord) {
+                alert("Gefeliciteerd! Je hebt het woord geraden: " + randomWord);
+            } else {
+                alert("probeer het opnieuw!");
+            }
         })
 
 
